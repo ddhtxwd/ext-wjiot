@@ -1,24 +1,24 @@
 {
 	"name": {
-		"zh-cn": "OLED-12864显示屏(示例)",
-		"en": "OLED-12864 screen"
+		"zh-cn": "WJ_iot",
+		"en": "WJ_iot"
 	},
 	"description": {
-		"zh-cn": "小体积显示屏，可用于智能穿戴设备的显示器。(用户库示例)",
-		"en": "I2C OLED-2864 Display Module"
+		"zh-cn": "WJ_iot",
+		"en": "WJ_iot"
 	},
-	"author": "DFRobot",
-	"email": "MindPlus@dfrobot.com",
+	"author": "WJ_iot",
+	"email": "WJ_iot",
 	"license": "MIT",
 	"isBoard": false,
-	"id": "oled12864",
+	"id": "WJ_iot",
 	"platform": ["win", "mac", "web"],
 	"version": "0.0.3",
 	"asset": {
 		"arduinoC": {
 			"dir": "arduinoC/",
 			"version": "0.0.3",
-			"board": ["microbit", "esp32"],
+			"board": ["microbit"],
 			"main": "main.ts"
 		}
 	}
