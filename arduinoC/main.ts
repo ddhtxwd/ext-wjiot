@@ -100,7 +100,8 @@ namespace WJ_iot {
     //% block="WIFI连接成功" blockType="hat"
     //% subcategory="联网"
     export function on_wifi_connected(parameter: any, block: any){
-        wifi_conneted = handler;
+        Generator.addEvent('on_wifi_connected1', "void", 'on_wifi_connected1', "", true);
+        Generator.addSetup('on_wifi_connected1', `wjiot.on_wifi_connected(on_wifi_connected1);`, false);
     }
 
 
@@ -111,7 +112,8 @@ namespace WJ_iot {
     //% block="云平台连接成功" blockType="hat"
     //% subcategory="联网"
     export function on_mqtt_connected(parameter: any, block: any){
-        mqtt_conneted = handler;
+        Generator.addEvent('on_mqtt_connected1', "void", 'on_mqtt_connected1', "", true);
+        Generator.addSetup('on_mqtt_connected1', `wjiot.on_mqtt_connected(on_mqtt_connected1);`, false);
     }
     
     /**
@@ -121,7 +123,8 @@ namespace WJ_iot {
     //% block="当收到命令时" blockType="hat"
     //% subcategory="联网"
     export function on_mqtt_receiveed(parameter: any, block: any){
-        mqtt_received = handler;
+        Generator.addEvent('on_mqtt_receiveed1', "void", 'on_mqtt_receiveed1', "", true);
+        Generator.addSetup('on_mqtt_receiveed1', `wjiot.on_mqtt_receiveed(on_mqtt_receiveed1);`, false);
     }
     
 	/**
@@ -172,6 +175,9 @@ namespace WJ_iot {
     */
     //% block="在屏幕的位置第 [y] 行第 [x] 列上显示数字: [number]"  group="物控盒显示"
     //% subcategory="显示"
+	//% x.shadow="range" x.params.min=0 x.params.max=127 x.defl=0
+	//% y.shadow="range" y.params.min=0 y.params.max=127 y.defl=0
+	//% number.shadow="range" number.defl=666
     export function lcd_display_number(parameter: any, block: any){
         let y=parameter.y.code;
 		let x=parameter.x.code;
@@ -190,6 +196,8 @@ namespace WJ_iot {
     */
     //% block="在屏幕的位置第 [y] 行第 [x] 列上显示文本: [string]"  group="物控盒显示"
     //% subcategory="显示"
+	//% x.shadow="range" x.params.min=0 x.params.max=127 x.defl=0
+	//% y.shadow="range" y.params.min=0 y.params.max=127 y.defl=0
     export function lcd_display_string(parameter: any, block: any){
         let y=parameter.y.code;
 		let x=parameter.x.code;
