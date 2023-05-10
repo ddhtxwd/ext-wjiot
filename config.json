@@ -18,7 +18,7 @@
 		"arduinoC": {
 			"dir": "arduinoC/",
 			"version": "0.0.3",
-			"board": ["microbit"],
+			"board": ["arduino"],
 			"main": "main.ts"
 		}
 	}

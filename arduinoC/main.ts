@@ -1,31 +1,24 @@
 
 
-enum BTN {
-    //% block="A键"
-    A,
-    //% block="B键"
-    B,
-    //% block="A+B"
-    AB
-}
+
 
 //% color="#AA278D" iconWidth=50 iconHeight=40
 namespace WJ_iot {
 
 
-    
-	//% block="当按下 [BUTTON]" blockType="hat"
-    //% BUTTON.shadow="dropdown" BUTTON.options="BTN" BUTTON.defl="BTN.A"
-    export function buttonPress(parameter: any, block: any) {
-        let button = parameter.BUTTON.code;
-        button = replace(button);
-        let name = 'button' + button + 'PressCallback';
 
-        Generator.addEvent(name, "void", name, "", true);
-        Generator.addSetup(block.id, `onEvent(ID_BUTTON_${button}, PRESS, ${name});`, false);
- 
+	/**
+     * 连接WIFI
+     * @param tx ; eg: "1"
+     * @param rx ; eg: "0"
+    */
+    //% block="初始化 UART：TX引脚 1 RX引脚：0"
+    //% subcategory="联网"
+    export function WIFI_init(parameter: any, block: any){
+        Generator.addInclude('wjiot', '#include <wjiot.h>');
+		Generator.addObject(`wjiot`, `WJIOT`, `wjiot;`);
+		Generator.addSetup(`wjiot.begin`, `wjiot.begin(1,0);`);
     }
-
     /**
      * 连接WIFI
      * @param ssid ; eg: "WIFI"
@@ -33,7 +26,7 @@ namespace WJ_iot {
     */
     //% block="连接WIFI 名称：[ssid] 密码：[pass]"
     //% subcategory="联网"
-	
+
     export function WIFI_connect(parameter: any, block: any){
 		let ssid=parameter.ssid.code;
 		let pass=parameter.pass.code;
@@ -90,42 +83,7 @@ namespace WJ_iot {
 		///Generator.addCode(`wjiot.get_value()`);
 		let code: string = `wjiot.get_value()`;
 		Generator.addCode([code, Generator.ORDER_UNARY_POSTFIX]);
-    }	
-	
-
-    /**
-     * WIFI连接成功
-     * @param handler WIFI connected callback
-    */
-    //% block="WIFI连接成功" blockType="hat"
-    //% subcategory="联网"
-    export function on_wifi_connected(parameter: any, block: any){
-        Generator.addEvent('on_wifi_connected1', "void", 'on_wifi_connected1', "", true);
-        Generator.addSetup('on_wifi_connected1', `wjiot.on_wifi_connected(on_wifi_connected1);`, false);
-    }
-
-
-    /**
-     * 云平台连接成功
-     * @param handler MQTT connected callback
-    */
-    //% block="云平台连接成功" blockType="hat"
-    //% subcategory="联网"
-    export function on_mqtt_connected(parameter: any, block: any){
-        Generator.addEvent('on_mqtt_connected1', "void", 'on_mqtt_connected1', "", true);
-        Generator.addSetup('on_mqtt_connected1', `wjiot.on_mqtt_connected(on_mqtt_connected1);`, false);
-    }
-    
-    /**
-     * On 收到云平台的命令
-     * @param handler MQTT receiveed callback
-    */
-    //% block="当收到命令时" blockType="hat"
-    //% subcategory="联网"
-    export function on_mqtt_receiveed(parameter: any, block: any){
-        Generator.addEvent('on_mqtt_receiveed1', "void", 'on_mqtt_receiveed1', "", true);
-        Generator.addSetup('on_mqtt_receiveed1', `wjiot.on_mqtt_receiveed(on_mqtt_receiveed1);`, false);
-    }
+    }		
     
 	/**
      * 开启接收另一个设备的信息
@@ -167,60 +125,19 @@ namespace WJ_iot {
 		let code: string = `wjiot.is_connected()`;
 		Generator.addCode([code, Generator.ORDER_UNARY_POSTFIX]);
     }
-    /**
-     * 显示数字
-     * @param x ; eg: 0
-     * @param y ; eg: 0
-     * @param number ; eg: 666
-    */
-    //% block="在屏幕的位置第 [y] 行第 [x] 列上显示数字: [number]"  group="物控盒显示"
-    //% subcategory="显示"
-	//% x.shadow="range" x.params.min=0 x.params.max=127 x.defl=0
-	//% y.shadow="range" y.params.min=0 y.params.max=127 y.defl=0
-	//% number.shadow="range" number.defl=666
-    export function lcd_display_number(parameter: any, block: any){
-        let y=parameter.y.code;
-		let x=parameter.x.code;
-		let number=parameter.number.code;
+	//% block="接收到命令？" blockType="boolean"
+    //% subcategory="联网"
+    export function is_available(parameter: any, block: any){
         Generator.addInclude('wjiot', '#include <wjiot.h>');
 		Generator.addObject(`wjiot`, `WJIOT`, `wjiot;`);
 		Generator.addSetup(`wjiot.begin`, `wjiot.begin();`);
-		Generator.addCode(`wjiot.lcd_display_number(${y},${x},${number});`);
+		///Generator.addCode(`wjiot.get_value()`);
+		let code: string = `wjiot.available()`;
+		Generator.addCode([code, Generator.ORDER_UNARY_POSTFIX]);
     }
+ 
 
-    /**
-     * 显示文本
-     * @param x ; eg: 0
-     * @param y ; eg: 0
-     * @param string ; eg: hello world
-    */
-    //% block="在屏幕的位置第 [y] 行第 [x] 列上显示文本: [string]"  group="物控盒显示"
-    //% subcategory="显示"
-	//% x.shadow="range" x.params.min=0 x.params.max=127 x.defl=0
-	//% y.shadow="range" y.params.min=0 y.params.max=127 y.defl=0
-    export function lcd_display_string(parameter: any, block: any){
-        let y=parameter.y.code;
-		let x=parameter.x.code;
-		let string=parameter.string.code;
-        Generator.addInclude('wjiot', '#include <wjiot.h>');
-		Generator.addObject(`wjiot`, `WJIOT`, `wjiot;`);
-		Generator.addSetup(`wjiot.begin`, `wjiot.begin();`);
-		Generator.addCode(`wjiot.lcd_display_string(${y},${x},${string});`);
-    }
 
-    //% block="清除显示"  group="物控盒显示"
-    //% subcategory="显示"
-    export function lcd_clear(parameter: any, block: any){
-
-        Generator.addInclude('wjiot', '#include <wjiot.h>');
-		Generator.addObject(`wjiot`, `WJIOT`, `wjiot;`);
-		Generator.addSetup(`wjiot.begin`, `wjiot.begin();`);
-		Generator.addCode(`wjiot.lcd_clear();`);
-    }
-
-    function replace(str :string) {
-        return str.replace("+", "");
-    }
 }
 
 
